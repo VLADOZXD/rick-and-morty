@@ -26,6 +26,11 @@ a {
 }
 
 @media screen and (max-width: 480px) {
+  .logo {
+    width: 80px;
+    height: 32px;
+  }
+
   .character-img {
     width: 256px;
     height: 256px;
