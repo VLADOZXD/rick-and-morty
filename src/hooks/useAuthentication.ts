@@ -28,7 +28,7 @@ const useAuthentication = () => {
         setIsLogin(true);
       })
       .catch((error) => {
-        setTimeout(() => setErrorMessage(undefined), 5000);
+        setTimeout(() => setErrorMessage(undefined), 2500);
         setErrorMessage(`${error.code}: ${error.message}`);
       });
   };
@@ -37,7 +37,7 @@ const useAuthentication = () => {
     signOut(auth)
       .then(() => setIsLogin(false))
       .catch((error) => {
-        setTimeout(() => setErrorMessage(undefined), 5000);
+        setTimeout(() => setErrorMessage(undefined), 2500);
         setErrorMessage(`${error.code}: ${error.message}`);
       });
   };

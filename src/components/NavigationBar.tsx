@@ -73,9 +73,17 @@ const NavigationBar = () => {
             <Alert
               severity="error"
               sx={{
-                position: "absolute",
-                top: "calc(100vh - 130px)",
-                left: "-150px",
+                position: "fixed",
+                top: "20px",
+                left: "50%",
+                transform: "translate(-50%, 0)",
+                overflowWrap: "break-word",
+                "@media screen and (max-width:620px)": {
+                  width: "500px",
+                },
+                "@media screen and (max-width:520px)": {
+                  width: "300px",
+                },
               }}
             >
               {errorMessage}
