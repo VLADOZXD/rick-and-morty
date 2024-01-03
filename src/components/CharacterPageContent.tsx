@@ -1,5 +1,10 @@
 "use client";
-import { Box, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import useAuthentication from "@/hooks/useAuthentication";
+
+import { Box, IconButton, Stack, Typography } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import { Character, Episode } from "@/types/fetchedData";
 
@@ -9,6 +14,41 @@ interface CharacterCardProps {
 }
 
 const CharacterPageContent = ({ character, episodes }: CharacterCardProps) => {
+  const [isFavorite, setIsFavorite] = useState(
+    typeof window !== "undefined" &&
+      JSON.parse(localStorage.getItem("favorites") as string)?.includes(
+        character.name
+      )
+  );
+
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      setIsFavorite(false);
+      const storageFavorites = JSON.parse(
+        localStorage.getItem("favorites") as string
+      );
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify(
+          storageFavorites.filter((name: string) => name !== character.name)
+        )
+      );
+    } else {
+      setIsFavorite(true);
+      const storageFavorites = JSON.parse(
+        localStorage.getItem("favorites") as string
+      );
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify(
+          storageFavorites
+            ? [...storageFavorites, character.name]
+            : [character.name]
+        )
+      );
+    }
+  };
+
   const createdDate = new Date(character.created);
 
   return (
@@ -23,6 +63,11 @@ const CharacterPageContent = ({ character, episodes }: CharacterCardProps) => {
         margin: "auto 0",
       }}
     >
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <IconButton onClick={handleFavoriteClick} sx={{ color: "#f9f9f9" }}>
+          {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        </IconButton>
+      </Box>
       <Stack
         spacing={{ xs: 1, sm: 6 }}
         direction="row"
