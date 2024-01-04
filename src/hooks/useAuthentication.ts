@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   onAuthStateChanged,
   signInWithPopup,
@@ -11,6 +12,8 @@ const useAuthentication = () => {
   const [user, setUser] = useState<User>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [isLogin, setIsLogin] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -35,7 +38,11 @@ const useAuthentication = () => {
 
   const facebookLogout = () => {
     signOut(auth)
-      .then(() => setIsLogin(false))
+      .then(() => {
+        setUser(undefined);
+        setIsLogin(false);
+        router.push("/");
+      })
       .catch((error) => {
         setTimeout(() => setErrorMessage(undefined), 2500);
         setErrorMessage(`${error.code}: ${error.message}`);

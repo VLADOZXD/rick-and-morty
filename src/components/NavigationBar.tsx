@@ -37,27 +37,29 @@ const NavigationBar = () => {
           <Box
             sx={{ display: "flex", alignItems: "center", marginLeft: "auto" }}
           >
-            {isLogin && (
-              <>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    marginRight: 1,
-                    "@media screen and (max-width:480px)": {
-                      fontSize: "0.6rem",
-                    },
-                  }}
-                >
-                  {user?.displayName}
-                </Typography>
-                <Avatar
-                  src={user?.photoURL ?? undefined}
-                  sx={{
-                    marginRight: 0.5,
-                  }}
-                />
-              </>
-            )}
+            <Link href="/favorites">
+              {isLogin && (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      marginRight: 1,
+                      "@media screen and (max-width:480px)": {
+                        fontSize: "0.6rem",
+                      },
+                    }}
+                  >
+                    {user?.displayName}
+                  </Typography>
+                  <Avatar
+                    src={user?.photoURL ?? undefined}
+                    sx={{
+                      marginRight: 0.5,
+                    }}
+                  />
+                </Box>
+              )}
+            </Link>
             {isLogin ? (
               <Button onClick={facebookLogout}>
                 <LogoutIcon />
@@ -68,7 +70,6 @@ const NavigationBar = () => {
               </Button>
             )}
           </Box>
-
           {errorMessage && (
             <Alert
               severity="error"

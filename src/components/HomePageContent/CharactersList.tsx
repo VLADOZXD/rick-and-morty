@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { showMore } from "./actions";
 import { getCharacters } from "@/services/characters";
 
-import CharacterItem from "./CharacterItem";
+import CharacterItem from "../CharacterItem";
 
 import { Box, Button, Grid, Typography } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";

@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import useAuthentication from "@/hooks/useAuthentication";
 
 import { Box, IconButton, Stack, Typography } from "@mui/material";
@@ -14,12 +15,17 @@ interface CharacterCardProps {
 }
 
 const CharacterPageContent = ({ character, episodes }: CharacterCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(
-    typeof window !== "undefined" &&
-      JSON.parse(localStorage.getItem("favorites") as string)?.includes(
-        character.name
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { isLogin } = useAuthentication();
+
+  useEffect(() => {
+    setIsFavorite(
+      JSON.parse(localStorage.getItem("favorites") as string)?.some(
+        (storageCharacter: { name: string }) =>
+          storageCharacter.name === character.name
       )
-  );
+    );
+  }, []);
 
   const handleFavoriteClick = () => {
     if (isFavorite) {
@@ -30,7 +36,10 @@ const CharacterPageContent = ({ character, episodes }: CharacterCardProps) => {
       localStorage.setItem(
         "favorites",
         JSON.stringify(
-          storageFavorites.filter((name: string) => name !== character.name)
+          storageFavorites.filter(
+            (storageCharacter: Character) =>
+              storageCharacter.id !== character.id
+          )
         )
       );
     } else {
@@ -41,9 +50,7 @@ const CharacterPageContent = ({ character, episodes }: CharacterCardProps) => {
       localStorage.setItem(
         "favorites",
         JSON.stringify(
-          storageFavorites
-            ? [...storageFavorites, character.name]
-            : [character.name]
+          storageFavorites ? [...storageFavorites, character] : [character]
         )
       );
     }
@@ -63,11 +70,13 @@ const CharacterPageContent = ({ character, episodes }: CharacterCardProps) => {
         margin: "auto 0",
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <IconButton onClick={handleFavoriteClick} sx={{ color: "#f9f9f9" }}>
-          {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-        </IconButton>
-      </Box>
+      {isLogin && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <IconButton onClick={handleFavoriteClick} sx={{ color: "#f9f9f9" }}>
+            {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
+        </Box>
+      )}
       <Stack
         spacing={{ xs: 1, sm: 6 }}
         direction="row"
